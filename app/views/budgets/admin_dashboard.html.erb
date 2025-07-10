@@ -1,16 +1,55 @@
-<h1>Budget Admin Dashboard</h1>
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12 col-lg-10 mx-auto">
 
-<p><strong>Stats:</strong></p>
-<pre><%= @budget_stats.inspect %></pre>
+      <h1 class="fw-bold mb-4 text-center"><i class="bi bi-speedometer2 me-2"></i>Budget Admin Dashboard</h1>
 
-<p><strong>Category Utilizations:</strong></p>
-<pre><%= @category_utilizations.inspect %></pre>
+      <!-- Stats Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold"><i class="bi bi-bar-chart me-2"></i>Stats</h5>
+              <%= render partial: "stats_badges", locals: {
+                total_allocated: number_to_currency(@budget_stats[:funds_allocated]),
+                remaining_funds: number_to_currency(@budget_stats[:funds_remaining]),
+                total_votes: @budget_stats[:total_votes],
+                participating_users: @budget_stats[:participating_users]
+              } %>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<p><strong>Phase Analytics:</strong></p>
-<pre><%= @phase_analytics.inspect %></pre>
+      <!-- Category Utilizations Section -->
+      <div class="row g-4 mb-4">
+        <div class="col-12">
+          <%= render partial: "category_utilizations_table", locals: { category_utilizations: @category_utilizations } %>
+        </div>
+      </div>
 
-<p><strong>Projects Over Category Limit:</strong></p>
-<pre><%= @projects_over_category_limit.inspect %></pre>
+      <!-- Phase Analytics Section -->
+      <div class="row g-4 mb-4">
+        <div class="col-12">
+          <%= render partial: "phase_analytics_table", locals: { phase_analytics: @phase_analytics } %>
+        </div>
+      </div>
 
-<p><strong>High Impact Projects:</strong></p>
-<pre><%= @high_impact_projects.inspect %></pre> 
+      <!-- Projects Over Category Limit & High Impact Projects -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <%= render partial: "projects_over_limit_list", locals: { projects: @projects_over_category_limit } %>
+        </div>
+        <div class="col-md-6">
+          <%= render partial: "high_impact_projects_list", locals: { projects: @high_impact_projects } %>
+        </div>
+      </div>
+      <div class="text-center mb-3">
+        <%= link_to '<i class="bi bi-arrow-left"></i> Back to Budgets'.html_safe, budgets_path, class: 'btn btn-outline-secondary btn-lg' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> 

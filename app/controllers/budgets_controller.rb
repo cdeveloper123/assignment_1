@@ -1,6 +1,6 @@
 class BudgetsController < ApplicationController
   before_action :set_budget, only: [:show, :results, :admin_dashboard]
-  
+
   def index
     @budgets = Budget.active.includes(:budget_categories, :voting_phases)
     @current_budgets = @budgets.voting_active
@@ -11,13 +11,11 @@ class BudgetsController < ApplicationController
     @budget_categories = @budget.budget_categories.ordered.includes(:budget_projects)
     @budget_projects = @budget.budget_projects.includes(:budget_category, :impact_metric, :user, :votes)
                               .order(votes_count: :desc)
-    
     # Filter by category if specified
     if params[:category_id].present?
       @selected_category = @budget.budget_categories.find(params[:category_id])
       @budget_projects = @budget_projects.where(budget_category: @selected_category)
     end
-
     # Filter by impact criteria (Enhancement 3)
     case params[:sort_by]
     when 'impact_score'
@@ -32,7 +30,6 @@ class BudgetsController < ApplicationController
     else
       @budget_projects = @budget_projects.by_votes_desc
     end
-
     # Phase filtering (Enhancement 2)
     @current_phase = @budget.current_phase || @budget.active_phase
     if params[:phase_id].present?
@@ -41,7 +38,6 @@ class BudgetsController < ApplicationController
     elsif @current_phase
       @budget_projects = @budget_projects.where(voting_phase: @current_phase)
     end
-
     @voting_phases = @budget.voting_phases.ordered
     @user_votes_remaining = current_user&.votes_remaining_for_budget(@budget) || 0
   end
@@ -50,36 +46,16 @@ class BudgetsController < ApplicationController
     @approved_projects = @budget.budget_projects.approved
                                 .includes(:budget_category, :impact_metric, :user)
                                 .order(allocated_amount: :desc)
-    
-    @category_allocations = @budget.budget_categories.includes(:budget_projects)
-                                   .map do |category|
-      {
-        category: category,
-        allocated: category.total_allocated,
-        utilization: category.utilization_percent,
-        projects_count: category.approved_projects_count
-      }
-    end
-
+    @category_allocations = category_allocations(@budget)
     @total_allocated = @budget.total_allocated
     @remaining_funds = @budget.remaining_funds
     @total_votes = @budget.total_votes_cast
     @participating_users = @budget.participating_users_count
-
-    # Phase results (Enhancement 2)
-    @phase_results = @budget.voting_phases.ordered.map do |phase|
-      {
-        phase: phase,
-        votes_count: phase.votes_cast_count,
-        projects_count: phase.projects_count,
-        participants_count: phase.participating_users_count
-      }
-    end
+    @phase_results = phase_results(@budget)
   end
 
   def admin_dashboard
     return redirect_to root_path unless current_admin_user
-
     @budget_stats = {
       total_projects: @budget.budget_projects.count,
       pending_projects: @budget.budget_projects.pending.count,
@@ -89,8 +65,6 @@ class BudgetsController < ApplicationController
       funds_allocated: @budget.total_allocated,
       funds_remaining: @budget.remaining_funds
     }
-
-    # Enhancement 1: Category utilization data
     @category_utilizations = @budget.budget_categories.ordered.map do |category|
       {
         category: category,
@@ -100,8 +74,6 @@ class BudgetsController < ApplicationController
         projects_pending: category.pending_projects_count
       }
     end
-
-    # Enhancement 2: Phase analytics
     @phase_analytics = @budget.voting_phases.ordered.map do |phase|
       {
         phase: phase,
@@ -111,11 +83,8 @@ class BudgetsController < ApplicationController
         participation_rate: phase.participating_users_count
       }
     end
-
-    # Projects needing attention
     @projects_over_category_limit = @budget.budget_projects.pending
                                            .select { |p| p.would_exceed_category_limit? }
-    
     @high_impact_projects = @budget.budget_projects.pending.high_impact.limit(10)
   end
 
@@ -123,5 +92,29 @@ class BudgetsController < ApplicationController
 
   def set_budget
     @budget = Budget.find(params[:id])
+  end
+
+  # Extracted: Category allocations for results
+  def category_allocations(budget)
+    budget.budget_categories.includes(:budget_projects).map do |category|
+      {
+        category: category,
+        allocated: category.total_allocated,
+        utilization: category.utilization_percent,
+        projects_count: category.approved_projects_count
+      }
+    end
+  end
+
+  # Extracted: Phase results for results
+  def phase_results(budget)
+    budget.voting_phases.ordered.map do |phase|
+      {
+        phase: phase,
+        votes_count: phase.votes_cast_count,
+        projects_count: phase.projects_count,
+        participants_count: phase.participating_users_count
+      }
+    end
   end
 end 

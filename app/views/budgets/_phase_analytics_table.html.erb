@@ -1,0 +1,29 @@
+<div class="card shadow border-0">
+  <div class="card-body">
+    <h5 class="card-title fw-semibold"><i class="bi bi-graph-up-arrow me-2"></i>Phase Analytics</h5>
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table table-sm table-hover align-middle mb-0" style="min-width: 600px;">
+        <thead class="table-light">
+          <tr>
+            <th>Phase</th>
+            <th>Status</th>
+            <th>Votes</th>
+            <th>Projects</th>
+            <th>Participation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% phase_analytics.each do |phase| %>
+            <tr>
+              <td><%= phase[:phase].name %></td>
+              <td><span class="badge bg-<%= phase[:status] == 'active' ? 'success' : 'secondary' %>"><%= phase[:status].humanize %></span></td>
+              <td><%= phase[:votes_count] %></td>
+              <td><%= phase[:projects_count] %></td>
+              <td><span class="badge bg-info text-dark"><%= phase[:participation_rate] %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

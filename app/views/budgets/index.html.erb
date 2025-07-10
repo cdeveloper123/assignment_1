@@ -1,50 +1,12 @@
-<div class="row">
-  <div class="col-12">
-    <h1 class="mb-4">Participatory Budgeting Platform</h1>
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-10">
+    <h1 class="mb-4 text-center fw-bold display-5">Participatory Budgeting Platform</h1>
     
     <% @budgets.each do |budget| %>
-      <div class="card mb-4">
-        <div class="card-header">
-          <h3><%= budget.name %></h3>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <h5>Budget Overview</h5>
-              <p><strong>Total Funds:</strong> <%= number_to_currency(budget.total_funds) %></p>
-              <p><strong>Allocated:</strong> <%= number_to_currency(budget.total_allocated) %></p>
-              <p><strong>Remaining:</strong> <%= number_to_currency(budget.remaining_funds) %></p>
-              <p><strong>Utilization:</strong> <%= number_to_percentage(budget.utilization_percentage, precision: 1) %></p>
-            </div>
-            <div class="col-md-6">
-              <h5>Categories</h5>
-              <% budget.budget_categories.each do |category| %>
-                <div class="mb-2">
-                  <strong><%= category.name %></strong>
-                                      <div class="progress">
-                      <div class="progress-bar <%= category.utilization_status %>" 
-                           style="width: <%= category.utilization_percent %>%">
-                        <%= number_to_percentage(category.utilization_percent, precision: 1) %>
-                      </div>
-                    </div>
-                  <small class="text-muted">
-                    <%= number_to_currency(category.total_allocated) %> / 
-                    <%= number_to_percentage(category.spending_limit_percentage, precision: 1) %> limit
-                  </small>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          
-          <div class="mt-3">
-            <%= link_to "View Projects", budget_budget_projects_path(budget), class: "btn btn-primary" %>
-            <%= link_to "View Results", results_budget_path(budget), class: "btn btn-info" %>
-            <% if user_signed_in? && (defined?(current_admin_user) && current_admin_user) %>
-              <%= link_to "Admin Dashboard", admin_dashboard_budget_path(budget), class: "btn btn-warning" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <%= render partial: "budget_card", locals: { budget: budget } %>
     <% end %>
   </div>
-</div> 
+</div>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> 

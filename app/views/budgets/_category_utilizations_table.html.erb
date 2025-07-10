@@ -1,0 +1,29 @@
+<div class="card shadow border-0">
+  <div class="card-body">
+    <h5 class="card-title fw-semibold"><i class="bi bi-pie-chart-fill me-2"></i>Category Utilizations</h5>
+    <div class="table-responsive" style="overflow-x: auto;">
+      <table class="table table-sm table-bordered align-middle mb-0" style="min-width: 600px;">
+        <thead class="table-light">
+          <tr>
+            <th>Category</th>
+            <th>Utilization %</th>
+            <th>Status</th>
+            <th>Remaining Limit</th>
+            <th>Pending Projects</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% category_utilizations.each do |cat| %>
+            <tr>
+              <td><span class="badge bg-info text-dark"><%= cat[:category].name %></span></td>
+              <td><%= cat[:utilization_percent] %></td>
+              <td><span class="badge bg-<%= cat[:status] == 'over' ? 'danger' : 'success' %>"><%= cat[:status].humanize %></span></td>
+              <td><%= cat[:remaining_limit] %></td>
+              <td><span class="badge bg-warning text-dark"><%= cat[:projects_pending] %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

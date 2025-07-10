@@ -1,78 +1,82 @@
-<h1>Budget Results</h1>
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12 col-md-10 mx-auto">
+      <div class="card shadow border-0 mb-4">
+        <div class="card-body">
+          <h1 class="card-title fw-bold mb-2"><i class="bi bi-bar-chart-line me-2"></i>Budget Results</h1>
+          <%= render partial: "stats_badges", locals: { total_allocated: number_to_currency(@total_allocated), remaining_funds: number_to_currency(@remaining_funds), total_votes: @total_votes, participating_users: @participating_users } %>
+        </div>
+      </div>
 
-<p>
-  <strong>Total Allocated:</strong> <%= number_to_currency(@total_allocated) %><br>
-  <strong>Remaining Funds:</strong> <%= number_to_currency(@remaining_funds) %><br>
-  <strong>Total Votes:</strong> <%= @total_votes %><br>
-  <strong>Participating Users:</strong> <%= @participating_users %>
-</p>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h2 class="fw-semibold mb-3"><i class="bi bi-pie-chart-fill me-2"></i>Category Allocations</h2>
+          <div class="table-responsive" style="overflow-x: auto;">
+            <table class="table table-bordered align-middle" style="min-width: 600px;">
+              <thead class="table-light">
+                <tr>
+                  <th>Category</th>
+                  <th>Allocated</th>
+                  <th>Utilization (%)</th>
+                  <th>Approved Projects</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @category_allocations.each do |cat| %>
+                  <tr>
+                    <td><span class="badge bg-info text-dark"><%= cat[:category].name %></span></td>
+                    <td><%= number_to_currency(cat[:allocated]) %></td>
+                    <td><%= cat[:utilization] %></td>
+                    <td><span class="badge bg-success"><%= cat[:projects_count] %></span></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-<h2>Category Allocations</h2>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Category</th>
-      <th>Allocated</th>
-      <th>Utilization (%)</th>
-      <th>Approved Projects</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @category_allocations.each do |cat| %>
-      <tr>
-        <td><%= cat[:category].name %></td>
-        <td><%= number_to_currency(cat[:allocated]) %></td>
-        <td><%= cat[:utilization] %></td>
-        <td><%= cat[:projects_count] %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h2 class="fw-semibold mb-3"><i class="bi bi-trophy-fill me-2"></i>Approved Projects</h2>
+          <%= render partial: "project_table", locals: { projects: @approved_projects, show_actions: false, budget: @budget } %>
+        </div>
+      </div>
 
-<h2>Approved Projects</h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Category</th>
-      <th>Allocated Amount</th>
-      <th>Owner</th>
-      <th>Impact Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @approved_projects.each do |project| %>
-      <tr>
-        <td><%= project.title %></td>
-        <td><%= project.budget_category.name %></td>
-        <td><%= number_to_currency(project.allocated_amount) %></td>
-        <td><%= project.user.full_name %></td>
-        <td><%= project.impact_score %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h2 class="fw-semibold mb-3"><i class="bi bi-graph-up-arrow me-2"></i>Phase Results</h2>
+          <div class="table-responsive" style="overflow-x: auto;">
+            <table class="table table-hover align-middle" style="min-width: 600px;">
+              <thead class="table-light">
+                <tr>
+                  <th>Phase</th>
+                  <th>Votes</th>
+                  <th>Projects</th>
+                  <th>Participants</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @phase_results.each do |phase| %>
+                  <tr>
+                    <td><%= phase[:phase].name %></td>
+                    <td><span class="badge bg-primary"><%= phase[:votes_count] %></span></td>
+                    <td><span class="badge bg-info text-dark"><%= phase[:projects_count] %></span></td>
+                    <td><span class="badge bg-success"><%= phase[:participants_count] %></span></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-<h2>Phase Results</h2>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Phase</th>
-      <th>Votes</th>
-      <th>Projects</th>
-      <th>Participants</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @phase_results.each do |phase| %>
-      <tr>
-        <td><%= phase[:phase].name %></td>
-        <td><%= phase[:votes_count] %></td>
-        <td><%= phase[:projects_count] %></td>
-        <td><%= phase[:participants_count] %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <div class="text-center mt-4">
+        <%= link_to '<i class="bi bi-arrow-left"></i> Back to Budgets'.html_safe, budgets_path, class: 'btn btn-outline-secondary btn-lg' %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Back to Budgets', budgets_path, class: 'btn btn-secondary' %> 
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> 

@@ -1,0 +1,16 @@
+<div class="card shadow border-0">
+  <div class="card-body">
+    <h5 class="card-title fw-semibold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Projects Over Category Limit</h5>
+    <% if projects.any? %>
+      <ul class="list-group list-group-flush">
+        <% projects.each do |p| %>
+          <li class="list-group-item">
+            <span class="fw-bold"><%= p.title %></span> (<span><%= p.budget_category.name %></span>)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <span class="text-success">No projects over category limit.</span>
+    <% end %>
+  </div>
+</div> 

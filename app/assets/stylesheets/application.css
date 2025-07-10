@@ -14,17 +14,206 @@
  *= require_self
  */
 
-/* Custom styles for participatory budgeting platform */
-.progress-bar.low { background-color: #28a745; }
-.progress-bar.medium { background-color: #ffc107; }
-.progress-bar.high { background-color: #fd7e14; }
-.progress-bar.critical { background-color: #dc3545; }
-.progress-bar.over_limit { background-color: #6f42c1; }
-
-.card {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+/* =====================
+   Color Palette
+   ===================== */
+:root {
+  --primary: #2563eb;
+  --secondary: #64748b;
+  --success: #22c55e;
+  --info: #0ea5e9;
+  --warning: #f59e42;
+  --danger: #ef4444;
+  --light-bg: #f8fafc;
+  --dark-text: #1e293b;
 }
 
-.navbar-brand {
-  font-weight: bold;
+/* =====================
+   Layout & Body
+   ===================== */
+html, body {
+  height: 100%;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--light-bg) !important;
+  color: var(--dark-text);
+}
+
+/* =====================
+   Navbar
+   ===================== */
+.navbar {
+  background: linear-gradient(90deg, var(--primary) 60%, var(--info) 100%) !important;
+}
+.navbar .navbar-brand, .navbar .nav-link, .navbar .navbar-text {
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.navbar .nav-link.active, .navbar .nav-link:focus, .navbar .nav-link:hover {
+  color: #ffe066 !important;
+  background: rgba(0,0,0,0.05);
+  border-radius: 0.25rem;
+}
+.navbar .navbar-text {
+  color: #fff !important;
+}
+
+/* =====================
+   Cards
+   ===================== */
+.card {
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 2px 12px 0 rgba(37,99,235,0.07);
+}
+.card-header {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* =====================
+   Buttons
+   ===================== */
+.btn-primary, .btn-outline-primary {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+}
+.btn-outline-primary {
+  background: transparent !important;
+  color: var(--primary) !important;
+}
+.btn-info, .btn-outline-info {
+  background: var(--info) !important;
+  border-color: var(--info) !important;
+  color: #fff !important;
+}
+.btn-outline-info {
+  background: transparent !important;
+  color: var(--info) !important;
+}
+.btn-success {
+  background: var(--success) !important;
+  border-color: var(--success) !important;
+  color: #fff !important;
+}
+.btn-warning {
+  background: var(--warning) !important;
+  border-color: var(--warning) !important;
+  color: #fff !important;
+}
+.btn-danger {
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: #fff !important;
+}
+
+/* =====================
+   Badges
+   ===================== */
+.badge.bg-primary {
+  background: var(--primary) !important;
+}
+.badge.bg-info {
+  background: var(--info) !important;
+  color: #fff !important;
+}
+.badge.bg-success {
+  background: var(--success) !important;
+}
+.badge.bg-warning {
+  background: var(--warning) !important;
+  color: #fff !important;
+}
+.badge.bg-danger {
+  background: var(--danger) !important;
+}
+
+/* =====================
+   Footer
+   ===================== */
+.footer {
+  background: #fff !important;
+  color: var(--secondary) !important;
+  border-top: 2px solid var(--primary) !important;
+  margin-top: auto !important;
+}
+
+/* =====================
+   Tables
+   ===================== */
+.table thead {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #e0e7ef;
+}
+.table-hover > tbody > tr:hover {
+  background-color: #dbeafe;
+}
+
+/* =====================
+   Section Headers
+   ===================== */
+h1, h2, h3, h4, h5 {
+  color: var(--primary);
+}
+
+/* =====================
+   Utilities & Section Backgrounds
+   ===================== */
+.section-bg {
+  background: linear-gradient(90deg, #e0e7ef 0%, #f8fafc 100%);
+  border-radius: 1rem;
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+}
+
+/* =====================
+   Table Cell Tooltips
+   ===================== */
+td[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+td[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  white-space: pre-line;
+  z-index: 9999;
+  font-size: 0.95em;
+  min-width: 120px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 1;
+  pointer-events: none;
+}
+td[data-tooltip]::after {
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+td[data-tooltip]:hover::after {
+  opacity: 1;
+}
+.table-responsive, .card-body, .card, .container {
+  overflow: visible !important;
+}
+td.first-row[data-tooltip]:hover::after {
+  top: 100% !important;
+  bottom: auto !important;
+  left: 50%;
+  transform: translateX(-50%);
 } 

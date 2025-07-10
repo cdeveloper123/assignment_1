@@ -1,49 +1,30 @@
-<h1>Budget Details</h1>
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12 col-md-8 mx-auto">
+      <div class="card shadow border-0">
+        <div class="card-body">
+          <h1 class="card-title fw-bold mb-2"><i class="bi bi-wallet2 me-2"></i>Budget: <%= @budget.name %></h1>
+          <p class="card-text text-muted mb-1">ID: <%= @budget.id %></p>
+          <div class="mb-2">
+            <span class="badge bg-primary">Total Funds: <%= number_to_currency(@budget.total_funds) %></span>
+            <span class="badge bg-success">Allocated: <%= number_to_currency(@budget.total_allocated) %></span>
+            <span class="badge bg-info text-dark">Remaining: <%= number_to_currency(@budget.remaining_funds) %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<p>
-  <strong>ID:</strong> <%= @budget.id %>
-</p>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="fw-semibold"><i class="bi bi-collection me-2"></i>Projects</h2>
+        <%= link_to 'Back to Budgets', budgets_path, class: 'btn btn-outline-secondary' %>
+      </div>
+      <%= render partial: "project_table", locals: { projects: @budget_projects, show_actions: true, budget: @budget } %>
+    </div>
+  </div>
+</div>
 
-<!-- Add more budget details here as needed -->
-
-<h2>Projects</h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Requested Amount</th>
-      <th>Votes</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @budget_projects.each do |project| %>
-      <tr>
-        <td><%= project.title %></td>
-        <td><%= project.description %></td>
-        <td><%= number_to_currency(project.requested_amount) %></td>
-        <td><%= project.votes_count %></td>
-        <td>
-          <% if user_signed_in? %>
-            <% if current_user.can_vote_for_project?(project) %>
-              <%= form_with url: vote_budget_budget_project_path(@budget, project), method: :patch, local: true do |f| %>
-                <%= f.hidden_field :vote_weight, value: 1.0 %>
-                <%= f.submit 'Vote', class: 'btn btn-success btn-sm' %>
-              <% end %>
-            <% elsif current_user.voted_for_project?(project) %>
-              <span class="text-primary">Voted</span>
-              <%= button_to 'Remove Vote', remove_vote_budget_budget_project_path(@budget, project), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
-            <% else %>
-              <span class="text-muted">Cannot vote</span>
-            <% end %>
-          <% else %>
-            <span class="text-info">Login to vote</span>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'Back to Budgets', budgets_path, class: 'btn btn-secondary' %> 
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> 
