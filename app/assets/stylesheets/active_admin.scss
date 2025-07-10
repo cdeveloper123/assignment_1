@@ -1,0 +1,62 @@
+// SASS variable overrides must be declared before loading up Active Admin's styles.
+//
+// To view the variables that Active Admin provides, take a look at
+// `app/assets/stylesheets/active_admin/mixins/_variables.css.scss` in the
+// Active Admin source.
+//
+// For example, to change the sidebar width:
+// $sidebar-width: 242px;
+
+// Active Admin's got SASS!
+$hover-menu-item-background: #f1f3f4;
+
+$menu-arrow-dark-icon-url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23000' d='M2 0l4 4-4 4z'/%3E%3C/svg%3E";
+
+$menu-arrow-light-icon-url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23333' d='M2 0l4 4-4 4z'/%3E%3C/svg%3E";
+
+$current-menu-item-background: #e9ecef;
+
+@mixin rounded($radius) {
+  border-radius: $radius;
+}
+
+$horizontal-page-margin: 24px;
+
+@mixin text-shadow($color) {
+  text-shadow: 0 1px 2px rgba($color, 0.15);
+}
+
+@mixin shadow {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+@mixin primary-gradient {
+  background: $primary-color;
+}
+
+$primary-color: #0d6efd;
+$secondary-color: #6c757d;
+$accent-color: #6610f2;
+$background-color: #fff;
+$text-color: #212529;
+$page-header-text-color: #212529;
+
+@import "active_admin/mixins";
+@import "active_admin/base";
+
+// Overriding any non-variable SASS must be done after the fact.
+// For example, to change the default status-tag color:
+//
+//   .status_tag { background: #6090DB; }
+
+// Make the highlighted admin panel header menu item more visible
+li.current > a {
+  color: #fff !important;
+  background: #0d6efd !important; // Use primary color for strong highlight
+}
+
+// Make the admin panel header menu item highlight on hover
+li > a:hover, li > a:focus {
+  color: #fff !important;
+  background: #0d6efd !important;
+}

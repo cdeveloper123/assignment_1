@@ -1,0 +1,49 @@
+<h1>Budget Details</h1>
+
+<p>
+  <strong>ID:</strong> <%= @budget.id %>
+</p>
+
+<!-- Add more budget details here as needed -->
+
+<h2>Projects</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Requested Amount</th>
+      <th>Votes</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @budget_projects.each do |project| %>
+      <tr>
+        <td><%= project.title %></td>
+        <td><%= project.description %></td>
+        <td><%= number_to_currency(project.requested_amount) %></td>
+        <td><%= project.votes_count %></td>
+        <td>
+          <% if user_signed_in? %>
+            <% if current_user.can_vote_for_project?(project) %>
+              <%= form_with url: vote_budget_budget_project_path(@budget, project), method: :patch, local: true do |f| %>
+                <%= f.hidden_field :vote_weight, value: 1.0 %>
+                <%= f.submit 'Vote', class: 'btn btn-success btn-sm' %>
+              <% end %>
+            <% elsif current_user.voted_for_project?(project) %>
+              <span class="text-primary">Voted</span>
+              <%= button_to 'Remove Vote', remove_vote_budget_budget_project_path(@budget, project), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: 'Are you sure?' } %>
+            <% else %>
+              <span class="text-muted">Cannot vote</span>
+            <% end %>
+          <% else %>
+            <span class="text-info">Login to vote</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back to Budgets', budgets_path, class: 'btn btn-secondary' %> 

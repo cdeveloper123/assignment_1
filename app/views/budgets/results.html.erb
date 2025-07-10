@@ -1,0 +1,78 @@
+<h1>Budget Results</h1>
+
+<p>
+  <strong>Total Allocated:</strong> <%= number_to_currency(@total_allocated) %><br>
+  <strong>Remaining Funds:</strong> <%= number_to_currency(@remaining_funds) %><br>
+  <strong>Total Votes:</strong> <%= @total_votes %><br>
+  <strong>Participating Users:</strong> <%= @participating_users %>
+</p>
+
+<h2>Category Allocations</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Allocated</th>
+      <th>Utilization (%)</th>
+      <th>Approved Projects</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @category_allocations.each do |cat| %>
+      <tr>
+        <td><%= cat[:category].name %></td>
+        <td><%= number_to_currency(cat[:allocated]) %></td>
+        <td><%= cat[:utilization] %></td>
+        <td><%= cat[:projects_count] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Approved Projects</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Category</th>
+      <th>Allocated Amount</th>
+      <th>Owner</th>
+      <th>Impact Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @approved_projects.each do |project| %>
+      <tr>
+        <td><%= project.title %></td>
+        <td><%= project.budget_category.name %></td>
+        <td><%= number_to_currency(project.allocated_amount) %></td>
+        <td><%= project.user.full_name %></td>
+        <td><%= project.impact_score %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Phase Results</h2>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th>Votes</th>
+      <th>Projects</th>
+      <th>Participants</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @phase_results.each do |phase| %>
+      <tr>
+        <td><%= phase[:phase].name %></td>
+        <td><%= phase[:votes_count] %></td>
+        <td><%= phase[:projects_count] %></td>
+        <td><%= phase[:participants_count] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back to Budgets', budgets_path, class: 'btn btn-secondary' %> 
