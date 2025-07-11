@@ -1,5 +1,8 @@
 # Participatory Budgeting Platform
 
+> **Assignment Source:** This project is based on [Assignment 1 from this link](<https://coda.io/d/ROR-Contract-Hiring-Round-2-Task-Assignments_d30_nT5M_S7/Instructions_suwU3dYu>).
+> We have picked and implemented Assignment 1 as described in the provided resource.
+
 A Ruby on Rails application implementing a comprehensive participatory budgeting system with three advanced features: **Budget Category Limits & Spending Controls**, **Multi-Phase Budget Voting**, and **Budget Impact Assessment Integration**.
 
 ## Features Overview
@@ -81,6 +84,11 @@ impact_metrics: estimated_beneficiaries, timeline, sustainability_score,
 
 ## Installation & Setup
 
+### Requirements
+
+- **Ruby version:** 3.1.0 or higher (recommended: 3.2.x or 3.1.x)
+- **Rails version:** 7.0 or higher
+
 ### Prerequisites
 - Ruby 3.1.0+
 - Rails 7.0+
@@ -91,7 +99,10 @@ impact_metrics: estimated_beneficiaries, timeline, sustainability_score,
 
 1. **Clone and setup**:
 ```bash
-git clone <repository>
+# Use Node.js 20
+nvm use 20
+
+git clone https://github.com/cdeveloper123/participatory-budgeting
 cd participatory-budgeting
 bundle install
 ```
@@ -103,7 +114,12 @@ rails db:migrate
 rails db:seed
 ```
 
-3. **Start services**:
+3. **Precompile assets**:
+```bash
+rake assets:precompile
+```
+
+4. **Start services**:
 ```bash
 # Start Rails server
 rails server
@@ -112,7 +128,7 @@ rails server
 bundle exec sidekiq
 ```
 
-4. **Access the application**:
+5. **Access the application**:
 - Main App: http://localhost:3000
 - Admin Panel: http://localhost:3000/admin
 
@@ -120,6 +136,18 @@ bundle exec sidekiq
 - **Admin**: admin@example.com / password123
 - **Budget Manager**: budget.manager@example.com / password123
 - **Users**: user1@example.com through user20@example.com / password123
+
+### Quick Setup:
+
+You can set up the project with a single command:
+
+```bash
+bash setup.sh
+```
+
+This script will automatically run all the necessary setup steps (Node version, bundle install, database setup, asset precompilation, etc.).
+
+---
 
 ## Demo Scenarios
 

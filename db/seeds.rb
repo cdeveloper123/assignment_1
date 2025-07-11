@@ -409,7 +409,7 @@ users.each do |user|
   available_projects = projects.select { |p| p.can_vote?(user) }
   
   # Sort by impact score and add some randomness
-  preferred_projects = available_projects.sort_by { |p| -p.impact_score + rand(-1..1) }
+  preferred_projects = available_projects.sort_by { |p| -p.impact_metric&.overall_impact_score.to_f + rand(-1..1) }
   
   preferred_projects.first(votes_to_cast).each do |project|
     vote = project.votes.create!(
@@ -486,7 +486,7 @@ phases.each do |phase|
 end
 
 puts "\n" + "Enhancement 3: Impact Assessment".upcase
-high_impact_projects = projects.select { |p| p.impact_score >= 8 }
+high_impact_projects = projects.select { |p| p.impact_metric&.overall_impact_score.to_f >= 8 }
 puts "- High Impact Projects (8+ score): #{high_impact_projects.count}"
 puts "- Total Estimated Beneficiaries: #{projects.sum(&:estimated_beneficiaries)}"
 puts "- Average Sustainability Score: #{(projects.sum(&:sustainability_score) / projects.count.to_f).round(1)}/10"
