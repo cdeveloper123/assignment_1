@@ -94,6 +94,7 @@ impact_metrics: estimated_beneficiaries, timeline, sustainability_score,
 - Rails 7.0+
 - SQLite3 (development)
 - Redis (for Sidekiq)
+- NVM must be 16+
 
 ### Installation Steps
 
@@ -101,6 +102,9 @@ impact_metrics: estimated_beneficiaries, timeline, sustainability_score,
 ```bash
 # Use Node.js 20
 nvm use 20
+
+# if not work use 
+nvm use 16
 
 git clone https://github.com/cdeveloper123/participatory-budgeting
 cd participatory-budgeting
