@@ -25,17 +25,17 @@ ActiveAdmin.register BudgetProject do
     end
     column :votes_count
     column "Impact Score" do |project|
-      badge_text = if project.impact_score >= 8
-                    "Very High (#{project.impact_score.round(1)})"
-                   elsif project.impact_score >= 6
-                    "High (#{project.impact_score.round(1)})"
-                   elsif project.impact_score >= 3
-                    "Medium (#{project.impact_score.round(1)})"
+      score = project.impact_metric&.overall_impact_score.to_f
+      badge_text = if score >= 8
+                      "Very High (#{score.round(1)})"
+                   elsif score >= 6
+                      "High (#{score.round(1)})"
+                   elsif score >= 3
+                      "Medium (#{score.round(1)})"
                    else
-                    "Low (#{project.impact_score.round(1)})"
+                      "Low (#{score.round(1)})"
                    end
-      
-      status_tag badge_text, class: project.impact_score >= 6 ? 'ok' : 'warning'
+      status_tag badge_text, class: score >= 6 ? 'ok' : 'warning'
     end
     column :created_at
     actions do |project|

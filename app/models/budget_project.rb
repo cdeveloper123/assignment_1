@@ -109,6 +109,11 @@ class BudgetProject < ApplicationRecord
     end
   end
 
+  # Alias for legacy code: impact_score returns the overall impact score
+  def impact_score
+    impact_metric&.overall_impact_score.to_f
+  end
+
   # Allowlist searchable attributes for Ransack (ActiveAdmin filters)
   def self.ransackable_attributes(auth_object = nil)
     [

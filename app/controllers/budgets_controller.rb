@@ -1,4 +1,5 @@
 class BudgetsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show, :results]
   before_action :set_budget, only: [:show, :results, :admin_dashboard]
 
   def index
